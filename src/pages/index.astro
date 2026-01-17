@@ -1,11 +1,57 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import { Picture } from 'astro:assets';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import HeaderPiture from '@assets/header-picture.png';
+import Round from '@assets/round-00.png';
+import TwoFloors from '@assets/2-floors-00.png';
+import ThreeMilks from '@assets/3-milks-00.png';
+import Square from '@assets/square-00.png';
+import Buffet from '@assets/buffet-00.png';
+import Alert from '@assets/alert.svg';
+import ArrowRight from '@assets/arrow-right.svg';
+
+import Layout from '@layouts/Layout.astro';
+
+import { db, Categories } from 'astro:db';
+
+const categories = await db.select().from(Categories);
+const images = [Round, TwoFloors, ThreeMilks, Square, Buffet];
 ---
 
 <Layout>
-	<Welcome />
+	<header class="relative mx-auto mt-5">
+		<Picture src={HeaderPiture} formats={["avif", "webp"]} alt="Foto de la portada" class="h-90 border-4 border-rose-200 rounded-2xl object-cover shadow"/>
+
+		<div class="absolute top-0 left-0 h-full py-5 px-3 flex flex-col justify-end">
+			<h1 class="text-3xl text-white text-shadow-lg font-bold">Bienvenidos a <span class="italic">Sweet Blessing</span></h1>
+			<span class="text-white">Dulces con mucho amor, pasión y un preparado 100% artesanal.</span>
+		</div>
+	</header>
+
+	<section>
+		<h2 class="text-xl text-rose-400">Especialidades de la Casa</h2>
+
+		<ul class="py-3 flex flex-nowrap gap-3 overflow-x-scroll">
+			{
+				categories.map(({id, label}, index)=> (
+					<li class="grow">
+						<a href={`category/${id}`} class="inline-flex flex-col w-20 items-center gap-3">
+							<Picture src={images[index]} formats={["avif", "webp"]} alt="Imagen ilustrativa" class="size-16 object-cover aspect-square border-2 border-rose-200 rounded-full"/>
+							<span class="uppercase text-xs text-nowrap">{label}</span>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	<section class="flex flex-col gap-5">
+		<Alert class="mx-auto size-12 text-rose-400"/>
+
+		<h2 class="text-center text-xl text-rose-400 font-bold">Leer, Por favor</h2>
+
+		<p class="text-center">Solo aceptamos pedidos en la localidad de <span class="italic">"Santiago de Cuba"</span>, cualquier pedido fuera del area sera ignorado. <br> Gracias por la atención.</p>
+
+		<a href="category/1" class="w-fit mx-auto py-2 px-3 inline-flex gap-3 text-white bg-rose-400 rounded-xl shadow active:scale-95 transition-[scale]">Explora nuestors productos <ArrowRight/></a>
+	</section>
 </Layout>

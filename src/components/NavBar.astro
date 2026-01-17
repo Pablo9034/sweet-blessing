@@ -1,0 +1,58 @@
+---
+import Home from '@assets/home.svg';
+import HomeFill from '@assets/home-fill.svg';
+import Catalog from '@assets/library.svg';
+import CatalogFill from '@assets/library-fill.svg';
+import Heart from '@assets/heart.svg';
+import HeartFill from '@assets/heart-fill.svg';
+import ShoppingCart from '@assets/shopping-cart.svg';
+import ShoppingCartFill from '@assets/shopping-cart-fill.svg';
+
+const pages = [
+    {
+        iconDefault: Home,
+        iconFill: HomeFill,
+        label: 'Inicio',
+        url: '/'
+    },
+    {
+        iconDefault: Catalog, 
+        iconFill: CatalogFill,
+        label: 'Catálogo',
+        url: '/category/1'
+    },
+    {
+        iconDefault: Heart, 
+        iconFill: HeartFill,
+        label: 'Favoritos',
+        url: '/favorites'
+    },
+    {
+        iconDefault: ShoppingCart, 
+        iconFill: ShoppingCartFill,
+        label: 'Carrito',
+        url: '/cart'
+    }
+];
+
+const pathname = Astro.originPathname;
+---
+
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-white/40 backdrop-blur-xs">
+    <ul class="py-3 px-5 flex justify-between text-rose-400 border-t border-rose-200">
+        {
+            pages.map(({iconDefault: Default, iconFill: Fill, label, url})=> (
+                <li>
+                    <a href={url} class="inline-flex flex-col items-center gap-1.5">
+                        {
+                            (pathname.split('/').at(1) === url.split('/').at(1))
+                                ? <Fill class="size-7"/>
+                                : <Default class="size-7"/>
+                        }
+                        <span class:list={["uppercase text-xs", {"text-black font-bold": pathname.split('/').at(1) === url.split('/').at(1)}]}>{label}</span>
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+</nav>
