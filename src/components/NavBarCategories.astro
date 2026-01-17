@@ -1,0 +1,25 @@
+---
+import { db, Categories } from "astro:db";
+
+const categories = await db.select().from(Categories);
+const pathname = Astro.originPathname.split('/').at(-2);
+---
+
+<nav>
+    <ul class="flex flex-nowrap gap-3 overflow-x-scroll">
+        {
+            categories.map(({id, label})=> (
+                <li class="py-3 grow">
+                    <a href={`${id}`}>
+                        <span class="uppercase text-nowrap">{label}</span>
+                        {
+                            pathname === String(id)
+                                ? <hr transition:name="select-navbar-categories" class="border-t-2 border-rose-400">
+                                : <hr class="border-t-0">
+                        }
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+</nav>

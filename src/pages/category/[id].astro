@@ -3,6 +3,7 @@ import type { GetStaticPaths } from "astro";
 import { db, Categories } from "astro:db";
 
 import Layout from '@layouts/Layout.astro';
+import NavBarCategories from '@components/NavBarCategories.astro';
 
 export const getStaticPaths = (async () => {
     const categories = await db.select().from(Categories);
@@ -17,5 +18,9 @@ const {name} = Astro.props;
 ---
 
 <Layout>
-    <h1>{name}</h1>
+    <header class="pt-5">
+        <h1 class="text-3xl font-bold text-neutral-700">Nuestras delicias de <span class="italic">Annie Gil</span></h1>
+    </header>
+
+    <NavBarCategories/>
 </Layout>
