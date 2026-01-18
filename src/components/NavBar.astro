@@ -38,8 +38,8 @@ const pages = [
 const pathname = Astro.originPathname;
 ---
 
-<nav class="fixed bottom-0 left-0 w-full z-50 bg-white/40 backdrop-blur-xs">
-    <ul class="py-3 px-5 flex justify-between text-rose-400 border-t border-rose-200">
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-white/40 backdrop-blur-xs shadow">
+    <ul class="py-1 px-5 flex justify-between text-rose-400 border-t border-rose-200">
         {
             pages.map(({iconDefault: Default, iconFill: Fill, label, url})=> (
                 <li>

@@ -3,7 +3,7 @@ import type { GetStaticPaths } from "astro";
 import { db, eq, Categories, Products } from "astro:db";
 
 import Layout from '@layouts/Layout.astro';
-import NavBarCategories from '@components/NavBarCategories.astro';
+import NavBar from '@components/NavBarCategories.astro';
 import ProductCard from '@components/ProductCard.astro';
 
 export const getStaticPaths = (async () => {
@@ -26,19 +26,20 @@ const products = await db.select().from(Products).where(eq(Products.category, id
         <h1 class="text-3xl font-bold text-neutral-700">Nuestras delicias de <span class="italic">Annie Gil</span></h1>
     </header>
 
-    <NavBarCategories/>
+    <NavBar />
 
     <section class="grid grid-cols-2 gap-y-5 gap-x-3">
         {
             products.map(async (product)=> {
-                const {name, price} = product;
                 const others = product.others as string;
                 const data = await JSON.parse(others)
 
                 return (
                     <ProductCard 
-                        name={name} 
-                        price={price}
+                        type={name}
+                        id={product.id}
+                        name={product.name} 
+                        price={product.price}
                         size={data.size.label}
                         serves={data.serves}/>
                 );

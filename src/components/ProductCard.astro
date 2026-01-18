@@ -2,22 +2,36 @@
 import { Picture } from 'astro:assets';
 
 import Round00 from '@assets/round-00.png';
+import Round01 from '@assets/round-01.png';
+import Round02 from '@assets/round-02.png';
+import Round03 from '@assets/round-03.png';
 
 import Size from '@assets/dimensions.svg';
 import Portions from '@assets/percentage-20.svg';
 
 interface Props {
+    type: string;
+    id: number;
     name: string;
     price: number;
     size?: string;
     serves?: string;
 };
 
-const {name, price, size, serves} = Astro.props;
+const {type, id, name, price, size, serves} = Astro.props;
+
+const pictures = ()=> {
+    const round = [Round00, Round01, Round02, Round03];
+
+    switch(type) {
+        case 'redondos': return round[id-1];
+        default: return round[0];
+    }
+}
 ---
 
 <a href="#">
-    <Picture src={Round00} formats={["avif", "webp"]} alt="Imagen ilustrativa del cake" class="h-60 rounded-2xl shadow"/>
+    <Picture src={pictures()} formats={["avif", "webp"]} alt="Imagen ilustrativa del cake" class="h-60 rounded-2xl shadow object-cover"/>
 
     <div class="text-neutral-700">
         <h3 class="text-xl font-bold text-rose-400">{name}</h3>
