@@ -1,0 +1,30 @@
+---
+import { Picture } from 'astro:assets';
+
+import Round00 from '@assets/round-00.png';
+
+import Size from '@assets/dimensions.svg';
+import Portions from '@assets/percentage-20.svg';
+
+interface Props {
+    name: string;
+    price: number;
+    size?: string;
+    serves?: string;
+};
+
+const {name, price, size, serves} = Astro.props;
+---
+
+<a href="#">
+    <Picture src={Round00} formats={["avif", "webp"]} alt="Imagen ilustrativa del cake" class="h-60 rounded-2xl shadow"/>
+
+    <div class="text-neutral-700">
+        <h3 class="text-xl font-bold text-rose-400">{name}</h3>
+        <span class="block">CUP: <span class="font-bold">{price}</span></span>
+        <div class="text-sm">
+            {size ? <span class="inline-flex gap-1 items-center"><Size/> {size}</span> : null}
+            {serves ? <span class="inline-flex gap-1 items-center"><Portions/> {serves}</span> : null}
+        </div>
+    </div>
+</a>
