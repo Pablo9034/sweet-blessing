@@ -1,10 +1,15 @@
 ---
 import { Picture } from 'astro:assets';
 
+// Round cake images
 import Round00 from '@assets/round-00.png';
 import Round01 from '@assets/round-01.png';
 import Round02 from '@assets/round-02.png';
 import Round03 from '@assets/round-03.png';
+// 2 Floor cake images
+import TwoFloors00 from '@assets/2-floors-00.png';
+import TwoFloors01 from '@assets/2-floors-03.png';
+
 
 import Size from '@assets/dimensions.svg';
 import Portions from '@assets/percentage-20.svg';
@@ -14,30 +19,38 @@ interface Props {
     id: number;
     name: string;
     price: number;
-    size?: string;
+    size?: string | string[];
     serves?: string;
 };
 
 const {type, id, name, price, size, serves} = Astro.props;
 
 const pictures = ()=> {
-    const round = [Round00, Round01, Round02, Round03];
-
-    switch(type) {
-        case 'redondos': return round[id-1];
-        default: return round[0];
-    }
+    const images = [Round00, Round01, Round02, Round03, TwoFloors00, TwoFloors01];
+    return images[id - 1] || Round00;
 }
 ---
 
-<a href="#">
-    <Picture src={pictures()} formats={["avif", "webp"]} alt="Imagen ilustrativa del cake" class="h-60 rounded-2xl shadow object-cover"/>
+<a href={`/product/${id}`}>
+    <Picture transition:name={`cake-picture-${id}`} src={pictures()} formats={["avif", "webp"]} alt="Imagen ilustrativa del cake" class="h-60 rounded-2xl shadow object-cover"/>
 
     <div class="text-neutral-700">
         <h3 class="text-xl font-bold text-rose-400">{name}</h3>
         <span class="block">CUP: <span class="font-bold">{price}</span></span>
         <div class="text-sm">
-            {size ? <span class="inline-flex gap-1 items-center"><Size/> {size}</span> : null}
+            {
+                size 
+                    ? type === '2 pisos'
+                        ? <span class="inline-flex gap-1 items-center">
+                            <Size/> 
+                            <span class="inline-flex flex-col">
+                                <span>{size[0]}</span>
+                                <span>{size[1]}</span>
+                            </span>
+                        </span>
+                        : <span class="inline-flex gap-1 items-center"><Size/> {size}</span>
+                    : null
+            }
             {serves ? <span class="inline-flex gap-1 items-center"><Portions/> {serves}</span> : null}
         </div>
     </div>

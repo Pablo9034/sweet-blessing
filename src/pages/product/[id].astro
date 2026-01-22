@@ -1,0 +1,54 @@
+---
+import { Picture } from 'astro:assets';
+
+import Back from '@assets/back.svg';
+// Round cake images
+import Round00 from '@assets/round-00.png';
+import Round01 from '@assets/round-01.png';
+import Round02 from '@assets/round-02.png';
+import Round03 from '@assets/round-03.png';
+// 2 Floor cake images
+import TwoFloors00 from '@assets/2-floors-00.png';
+import TwoFloors01 from '@assets/2-floors-03.png';
+
+import type { GetStaticPaths } from "astro";
+import { db, eq, Categories, Products } from "astro:db";
+
+import Layout from '@layouts/Layout.astro';
+import PurchaseForm from '@components/PurchaseForm.tsx';
+
+export const getStaticPaths = (async () => {
+    const products = await db.select().from(Products);
+    const pages = products.map(({id, name, price, category, others})=> {
+        return {params: {id}, props: {name, price, category, others}};
+    });
+
+    return [...pages];
+}) satisfies GetStaticPaths;
+
+const {id} = Astro.params;
+const {name, price, category, others} = Astro.props;
+
+const categoryData = await db.select().from(Categories).where(eq(Categories.id, category));
+
+const pictures = ()=> {
+    const images = [Round00, Round01, Round02, Round03, TwoFloors00, TwoFloors01];
+    return images[id - 1] || Round00;
+}
+---
+
+<Layout>
+    <a href={`/category/${category}`} class="px-2 py-2 fixed top-3 left-3 inline-flex bg-white/40 backdrop-blur-xs rounded-xl shadow z-50"><Back/> Volver</a>
+
+    <header class="relative mx-auto mt-5">
+		<Picture transition:name={`cake-picture-${id}`} src={pictures()} formats={["avif", "webp"]} alt="Imagen ilustrativa del cake" class="h-90 rounded-2xl object-cover shadow"/>
+
+		<div class="absolute top-0 left-0 h-full py-5 px-3 flex flex-col justify-end">
+            <span class="w-fit py-1 px-3 bg-rose-400/40 backdrop-blur-xs rounded-full uppercase text-sm text-white shadow">{categoryData[0].label}</span>
+			<h1 class="text-3xl text-white text-shadow-lg font-bold">{name}</h1>
+			<span class="text-white text-shadow-lg">Desde {price} CUP</span>
+		</div>
+	</header>
+
+    <PurchaseForm info={others as string} price={price} client:only="solid-js"/>
+</Layout>
