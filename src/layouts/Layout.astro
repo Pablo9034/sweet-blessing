@@ -4,6 +4,8 @@ import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 
 import NavBar from '@components/NavBar.astro';
+
+const pathname = Astro.originPathname;
 ---
 
 <!doccategory html>
@@ -22,7 +24,11 @@ import NavBar from '@components/NavBar.astro';
 		<main class="mb-18.75 px-5 flex flex-col gap-10">
 			<slot />
 
-			<NavBar/>
+			{
+				pathname.includes('product')
+					? null
+					: <NavBar/> 
+			}
 
 			<footer>
 				<p class="text-center">2026 creado por Pablo A.</p>

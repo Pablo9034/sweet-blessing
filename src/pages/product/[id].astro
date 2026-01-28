@@ -12,10 +12,10 @@ import TwoFloors00 from '@assets/2-floors-00.png';
 import TwoFloors01 from '@assets/2-floors-03.png';
 
 import type { GetStaticPaths } from "astro";
-import { db, eq, Categories, Products } from "astro:db";
+import { db, eq, Categories, Products, ilike } from "astro:db";
 
 import Layout from '@layouts/Layout.astro';
-import PurchaseForm from '@components/PurchaseForm.tsx';
+import PurchaseContainer from '@components/PurchaseContainer.tsx';
 
 export const getStaticPaths = (async () => {
     const products = await db.select().from(Products);
@@ -38,7 +38,7 @@ const pictures = ()=> {
 ---
 
 <Layout>
-    <a href={`/category/${category}`} class="px-2 py-2 fixed top-3 left-3 inline-flex bg-white/40 backdrop-blur-xs rounded-xl shadow z-50"><Back/> Volver</a>
+    <a href={`/category/${category}`} class="px-2 py-2 fixed top-3 left-3 inline-flex bg-white/40 backdrop-blur-xs rounded-xl shadow z-50 active:scale-95 transition-[scale]"><Back/> Volver</a>
 
     <header class="relative mx-auto mt-5">
 		<Picture transition:name={`cake-picture-${id}`} src={pictures()} formats={["avif", "webp"]} alt="Imagen ilustrativa del cake" class="h-90 rounded-2xl object-cover shadow"/>
@@ -50,5 +50,5 @@ const pictures = ()=> {
 		</div>
 	</header>
 
-    <PurchaseForm info={others as string} price={price} client:only="solid-js"/>
+   <PurchaseContainer info={others as string} price={price} client:only="solid-js"/>
 </Layout>
