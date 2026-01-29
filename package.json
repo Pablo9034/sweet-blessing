@@ -19,5 +19,8 @@
     "sharp": "^0.34.5",
     "solid-js": "^1.9.10",
     "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "wrangler": "^4.61.0"
   }
 }
