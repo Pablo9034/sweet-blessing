@@ -11,7 +11,7 @@ export default function InputAdditions(props: {additions: {label: string, price:
             <fieldset classList={{
                 "mb-5 flex flex-col gap-3 border-t border-rose-200 overflow-hidden": true,
                 "h-52": !showAllAdditions(),
-            }} style={{ "interpolate-size": "allow-keywords" }}>
+            }}>
             <legend class="mb-5">
                 <h2 class="text-xl font-bold text-rose-400">Agregados</h2>
                 <span class="uppercase text-sm italic text-neutral-700">Seccion opcional</span>
